@@ -41,6 +41,8 @@ Ext.onReady(function() {
             dayText: 'Day',
             weekText: 'Week',
             monthText: 'Month',
+            agendaText: 'Agenda',
+            listText: 'List',
             jumpToText: 'Jump to:',
             goText: 'Go',
             multiDayText: '{0} Days', // deprecated
@@ -357,6 +359,40 @@ Ext.onReady(function() {
                 nthWeekdayDateFormat: 'S' // displays the ordinal postfix, e.g. th for 5th.
 
             }
+        });
+    }
+
+    if (exists('Extensible.calendar.template.AgendaBody')) {
+        Ext.apply(Extensible.calendar.template.AgendaBody.prototype, {
+            dayDateFormat: 'D M j',
+            hourFormat: 'G:i',
+            allDayText: 'All day',
+            locationText: 'Location',
+            webLinkText: 'Web Link',
+            notesText: 'Notes',
+            noEventsText: 'There are no events for the selected date range.',
+            prevLinkText: 'Previous',
+            nextLinkText: 'Next',
+            reminderTooltip: 'Reminder is activated',
+            recurringTooltip: 'Recurring event'
+        });
+    }
+
+    if (exists('Extensible.calendar.view.AgendaHeader')) {
+        Ext.apply(Extensible.calendar.view.AgendaHeader.prototype, {
+            dateRangeOneDay: 'One day',
+            dateRangeOneWeek: 'One week',
+            dateRangeOneMonth: 'One month',
+            dateRangeThreeMonths: 'Three months',
+            dateRangeOneYear: 'One year',
+            dateRangeText: 'Date range',
+            groupByMonths: 'Month',
+            groupByWeek: 'Week',
+            groupByNone: 'None',
+            groupByText: 'Group by',
+            showDetailsText: 'Show details',
+            addBtnText: 'Add event',
+            resetBtnText: 'Reset'
         });
     }
 });

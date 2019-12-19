@@ -97,6 +97,8 @@ Ext.define('Extensible.calendar.template.BoxLayout', {
             prevMonthCls = o.prevMonthCls,
             nextMonthCls = o.nextMonthCls,
             todayCls = o.todayCls,
+            extraDayTitleCls = '',
+            //extraDayBodyCls = '',
             weeks = [[]],
             dt = Extensible.Date.add(Ext.Date.clearTime(this.viewStart, true), {hours: 12}),
             thisMonth = this.startDate.getMonth();
@@ -121,6 +123,14 @@ Ext.define('Extensible.calendar.template.BoxLayout', {
                     weeks[w].weekLinkId = 'ext-cal-week-'+Ext.Date.format(dt, 'Ymd');
                 }
 
+                if (o.getDayTitleClass) {
+                    extraDayTitleCls = o.getDayTitleClass(dt);
+                }
+
+                // if (o.getDayBodyClass) {
+                //     extraDayBodyCls = o.getDayBodyClass(dt);
+                // }
+
                 if (showMonth) {
                     if (isToday) {
                         title = this.getTodayText();
@@ -139,7 +149,7 @@ Ext.define('Extensible.calendar.template.BoxLayout', {
                     title: title,
                     date: Ext.Date.clone(dt),
 
-                    titleCls: 'ext-cal-dtitle ' + (isToday ? ' ext-cal-dtitle-today' : '') +
+                    titleCls: 'ext-cal-dtitle ' + extraDayTitleCls + (isToday ? ' ext-cal-dtitle-today' : '') +
                         (w === 0 ? ' ext-cal-dtitle-first' : '') +
                         (prevMonth ? ' ext-cal-dtitle-prev' : '') +
                         (nextMonth ? ' ext-cal-dtitle-next' : ''),
