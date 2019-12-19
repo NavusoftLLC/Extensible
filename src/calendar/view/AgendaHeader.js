@@ -223,7 +223,7 @@ Ext.define('Extensible.calendar.view.AgendaHeader', {
         var formItems = {
             xtype: 'fieldcontainer',
             labelWidth: 100,
-            height: 45,
+            height: 60,
             fieldDefaults: {
                 // padding: 20,
                 labelAlign: 'top',
