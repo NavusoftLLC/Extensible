@@ -267,7 +267,9 @@ Ext.define('Extensible.calendar.view.DayBody', {
             this.eventTpl = !(Ext.isIE || Ext.isOpera) ?
                 Ext.create('Ext.XTemplate',
                     '<div id="{_elId}" class="{_extraCls} ext-cal-evt ext-cal-evr" ',
-                            'style="left: {_left}%; width: {_width}%; top: {_top}px; height: {_height}px;">',
+                            'style="left: {_left}%; width: {_width}%; top: {_top}px; height: {_height}px;"',
+                    this.enableTooltips ? ' data-qtip="<b>{Title}</b><br/>{Notes}"' : '',
+                    '>',
                         '<div class="ext-evt-bd">', this.getEventBodyMarkup(), '</div>',
                         this.enableEventResize ?
                             '<div class="ext-evt-rsz"><div class="ext-evt-rsz-h">&#160;</div></div>' : '',
@@ -275,7 +277,9 @@ Ext.define('Extensible.calendar.view.DayBody', {
                 )
                 : Ext.create('Ext.XTemplate',
                     '<div id="{_elId}" class="ext-cal-evt {_extraCls}" ',
-                            'style="left: {_left}%; width: {_width}%; top: {_top}px;">',
+                            'style="left: {_left}%; width: {_width}%; top: {_top}px;"',
+                    this.enableTooltips ? ' data-qtip="<b>{Title}</b><br/>{Notes}"' : '',
+                    '>',
                         '<div class="ext-cal-evb">&#160;</div>',
                         '<dl style="height: {_height}px;" class="ext-cal-evdm">',
                             '<dd class="ext-evt-bd">',

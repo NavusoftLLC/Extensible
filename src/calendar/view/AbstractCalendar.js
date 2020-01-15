@@ -2133,6 +2133,14 @@ Ext.define('Extensible.calendar.view.AbstractCalendar', {
     destroy: function() {
         this.callParent(arguments);
 
+        // Remove events tied to stores
+        if (this.store) {
+            this.setStore(null);
+        }
+        if (this.calendarStore) {
+            this.setCalendarStore(null);
+        }
+
         if (this.el) {
             this.el.un('contextmenu', this.onContextMenu, this);
         }

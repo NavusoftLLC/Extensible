@@ -1078,5 +1078,11 @@ Ext.define('Extensible.calendar.CalendarPanel', {
      */
     getActiveView: function() {
         return this.layout.activeItem;
+    },
+
+    // private
+    onDestroy: function() {
+        this.setStore(null);
+        this.callParent(arguments);
     }
 });

@@ -76,6 +76,11 @@ Ext.define('Extensible.calendar.view.Month', {
      * of the day box is too narrow for the events to be easily readable (defaults to 220 pixels).
      */
     morePanelMinWidth: 220,
+    /**
+     * @cfg {Boolean} enableTooltips
+     * True to display tooltips from Title & Notes of an event
+     */
+    enableTooltips: false,
 
     //private properties -- do not override:
     daySelector: '.ext-cal-day',
@@ -254,18 +259,24 @@ Ext.define('Extensible.calendar.view.Month', {
 
             tpl = !(Ext.isIE || Ext.isOpera) ?
                 Ext.create('Ext.XTemplate',
-                    '<div class="{_extraCls} {spanCls} ext-cal-evt ext-cal-evr">',
+                    '<div class="{_extraCls} {spanCls} ext-cal-evt ext-cal-evr"',
+                    this.enableTooltips ? ' data-qtip="<b>{Title}</b><br/>{Notes}"' : '',
+                    '>',
                         body,
                     '</div>'
                 )
                 : Ext.create('Ext.XTemplate',
                     '<tpl if="_renderAsAllDay">',
-                        '<div class="{_extraCls} {spanCls} ext-cal-evt ext-cal-evo">',
+                        '<div class="{_extraCls} {spanCls} ext-cal-evt ext-cal-evo"',
+                    this.enableTooltips ? ' data-qtip="<b>{Title}</b><br/>{Notes}"' : '',
+                    '>',
                             '<div class="ext-cal-evm">',
                                 '<div class="ext-cal-evi">',
                     '</tpl>',
                     '<tpl if="!_renderAsAllDay">',
-                        '<div class="{_extraCls} ext-cal-evt ext-cal-evr">',
+                        '<div class="{_extraCls} ext-cal-evt ext-cal-evr"',
+                    this.enableTooltips ? ' data-qtip="<b>{Title}</b><br/>{Notes}"' : '',
+                    '>',
                     '</tpl>',
                     body,
                     '<tpl if="_renderAsAllDay">',
@@ -394,7 +405,8 @@ Ext.define('Extensible.calendar.view.Month', {
     getMaxEventsPerDay: function() {
         var dayHeight = this.getDaySize(true).height,
             eventHeight = this.getEventHeight(),
-            max = Math.max(Math.floor((dayHeight - eventHeight) / eventHeight), 0);
+            leftOver =dayHeight % eventHeight;
+            max = Math.max(Math.floor((dayHeight - eventHeight) / eventHeight), (leftOver >= 15) ? 1 : 0);
 
         return max;
     },
