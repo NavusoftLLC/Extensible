@@ -882,7 +882,8 @@ Ext.define('Extensible.calendar.view.AbstractCalendar', {
             prevMonthCls: this.prevMonthCls,
             nextMonthCls: this.nextMonthCls,
             todayCls: this.todayCls,
-            getDayTitleClass: this.getDayTitleClass
+            getDayTitleClass: this.getDayTitleClass,
+            getDayTitleComponent: this.getDayTitleComponent
         };
     },
 

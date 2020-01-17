@@ -123,26 +123,27 @@ Ext.define('Extensible.calendar.template.BoxLayout', {
                     weeks[w].weekLinkId = 'ext-cal-week-'+Ext.Date.format(dt, 'Ymd');
                 }
 
+                // Add additional classes to title based on provided function
                 if (o.getDayTitleClass) {
                     extraDayTitleCls = o.getDayTitleClass(dt);
                 }
 
-                // if (o.getDayBodyClass) {
-                //     extraDayBodyCls = o.getDayBodyClass(dt);
-                // }
-
-                if (showMonth) {
-                    if (isToday) {
-                        title = this.getTodayText();
-                    }
-                    else {
-                        title = Ext.Date.format(dt, this.dayCount === 1 ? this.singleDayDateFormat :
-                                (first ? this.multiDayFirstDayFormat : this.multiDayMonthStartFormat));
-                    }
+                // Override calculation for Title using provided function
+                if (o.getDayTitleComponent) {
+                    title = o.getDayTitleComponent(this, dt, isToday, thisMonth, w, first)
                 }
                 else {
-                    var dayFmt = (w === 0 && this.showHeader !== true) ? this.firstWeekDateFormat : this.otherWeeksDateFormat;
-                    title = isToday ? this.getTodayText() : Ext.Date.format(dt, dayFmt);
+                    if (showMonth) {
+                        if (isToday) {
+                            title = this.getTodayText();
+                        } else {
+                            title = Ext.Date.format(dt, this.dayCount === 1 ? this.singleDayDateFormat :
+                                (first ? this.multiDayFirstDayFormat : this.multiDayMonthStartFormat));
+                        }
+                    } else {
+                        var dayFmt = (w === 0 && this.showHeader !== true) ? this.firstWeekDateFormat : this.otherWeeksDateFormat;
+                        title = isToday ? this.getTodayText() : Ext.Date.format(dt, dayFmt);
+                    }
                 }
 
                 weeks[w].push({
