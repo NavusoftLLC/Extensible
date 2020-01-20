@@ -570,6 +570,31 @@ Ext.define('Extensible.calendar.view.DayBody', {
         }
     },
 
+    onContextMenu: function(e, t) {
+        if(Extensible.calendar.view.DayBody.superclass.onContextMenu.apply(this, arguments)) {
+            // The superclass handled the click already so exit
+            return;
+        }
+        if(e.getTarget('.ext-cal-day-times', 3) !== null) {
+            // ignore clicks on the times-of-day gutter
+            return;
+        }
+        var el = e.getTarget('td', 3);
+        if(el) {
+            if(el.id && el.id.indexOf(this.dayElIdDelimiter) > -1) {
+                var dt = this.getDateFromId(el.id, this.dayElIdDelimiter),
+                    parsedDate = Ext.Date.parseDate(dt + ' 12:00', 'Ymd G:i');
+
+                this.onDayContextMenu(parsedDate, true, Ext.get(this.getDayId(dt)));
+                return;
+            }
+        }
+        var day = this.getDayAt(e.getX(), e.getY());
+        if(day && day.date) {
+            this.onDayContextMenu(day.date, false, null);
+        }
+    },
+
     /**
      * @protected
      */

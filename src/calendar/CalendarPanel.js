@@ -759,7 +759,7 @@ Ext.define('Extensible.calendar.CalendarPanel', {
                     'beforedatechange', 'datechange', 'rangeselect', 'beforeeventcopy', 'eventcopy',
                     'beforeeventmove', 'eventmove', 'initdrag', 'dayover', 'dayout', 'beforeeventresize',
                     'eventresize', 'eventadd', 'eventupdate', 'beforeeventdelete', 'eventdelete',
-                    'eventcancel', 'eventexception']);
+                    'eventcancel', 'eventexception', 'eventcontextmenu', 'daycontextmenu']);
                 
                 c.on('editdetails', this.onEditDetails, this);
             },

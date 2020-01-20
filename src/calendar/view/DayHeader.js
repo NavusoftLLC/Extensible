@@ -82,9 +82,24 @@ Ext.define('Extensible.calendar.view.DayHeader', {
             if (el.id && el.id.indexOf(this.dayElIdDelimiter) > -1) {
                 var parts = el.id.split(this.dayElIdDelimiter),
                     dt = parts[parts.length-1],
-                    parsedDate = Ext.Date.parseDate(dt + ' 12:00', 'Ymd G:i')
+                    parsedDate = Ext.Date.parseDate(dt + ' 12:00', 'Ymd G:i');
 
                 this.onDayClick(parsedDate, true, Ext.get(this.getDayId(dt, true)));
+                return;
+            }
+        }
+        this.callParent(arguments);
+    },
+
+    onContextMenu: function(e, t) {
+        var el = e.getTarget('td', 3);
+        if (el) {
+            if (el.id && el.id.indexOf(this.dayElIdDelimiter) > -1) {
+                var parts = el.id.split(this.dayElIdDelimiter),
+                    dt = parts[parts.length-1],
+                    parsedDate = Ext.Date.parseDate(dt + ' 12:00', 'Ymd G:i');
+
+                this.onDayContextMenu(parsedDate, true, Ext.get(this.getDayId(dt, true)));
                 return;
             }
         }

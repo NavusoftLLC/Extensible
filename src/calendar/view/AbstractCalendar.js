@@ -550,7 +550,23 @@ Ext.define('Extensible.calendar.view.AbstractCalendar', {
              * @param {Ext.data.Operation} operation The operation that was processed
              * @since 1.6.0
              */
-            eventexception: true
+            eventexception: true,
+            /**
+             * @event eventcontextmenu
+             * Fires when right click on event item
+             * @param {Extensible.calendar.view.AbstractCalendar} this
+             * @param {Extensible.calendar.data.EventModel} rec The {@link Extensible.calendar.data.EventModel record} that was clicked on
+             * @param {HTMLNode} el The DOM node that was clicked on
+             */
+            eventcontextmenu: true,
+            /**
+             * @event daycontextmenu
+             * Fires when right click on day
+             * @param {Extensible.calendar.view.AbstractCalendar} this
+             * @param {Date} dt The date that is being clicked on
+             * @param {HTMLNode} el The DOM node that was clicked on
+             */
+            daycontextmenu: true,
         });
     },
 
@@ -579,14 +595,16 @@ Ext.define('Extensible.calendar.view.AbstractCalendar', {
             'mouseover': this.onMouseOver,
             'mouseout': this.onMouseOut,
             'click': this.onClick,
+            'contextmenu': this.onContextMenu,
+
             //'resize': this.onResize,
             scope: this
         });
 
         // currently the context menu only contains CRUD actions so do not show it if read-only
-        if (this.enableContextMenus && this.readOnly !== true) {
-            this.el.on('contextmenu', this.onContextMenu, this);
-        }
+        // if (this.enableContextMenus && this.readOnly !== true) {
+        //     this.el.on('contextmenu', this.onContextMenu, this);
+        // }
 
         if (this.enableTooltips && !this.tooltip) {
             this.tooltip = Ext.create('Ext.tip.ToolTip', {
@@ -1845,6 +1863,11 @@ Ext.define('Extensible.calendar.view.AbstractCalendar', {
         }
     },
 
+    // called from subclasses
+    onDayContextMenu: function(dt, ad, el) {
+        this.fireEvent('daycontextmenu', this, Ext.Date.clone(dt), ad, el);
+    },
+
     showEventMenu: function(el, xy) {
         var me = this;
 
@@ -2024,17 +2047,28 @@ Ext.define('Extensible.calendar.view.AbstractCalendar', {
     },
 
     onContextMenu: function(e, t) {
-        var el = e.getTarget(this.eventSelector, 5, true),
+        var me = this,
+            el = e.getTarget(this.eventSelector, 5, true),
             match = false;
 
         if (el) {
-            this.dismissEventEditor().showEventMenu(el, e.getXY());
+            var id = me.getEventIdFromEl(el),
+                rec = me.getEventRecord(id);
+
+            if (rec && me.fireEvent('eventcontextmenu', me, rec, el) !== false) {
+                if (this.enableContextMenus && this.readOnly !== true) {
+                    this.dismissEventEditor().showEventMenu(el, e.getXY());
+                }
+            }
+
             match = true;
         }
 
         if (match || this.suppressBrowserContextMenu === true) {
             e.preventDefault();
         }
+
+        return match;
     },
 
     /*
@@ -2176,6 +2210,9 @@ Ext.define('Extensible.calendar.view.AbstractCalendar', {
         }
 
         if (this.el) {
+            this.el.un('mouseover', this.onMouseOver, this);
+            this.el.un('mouseout', this.onMouseOut, this);
+            this.el.un('click', this.onClick, this);
             this.el.un('contextmenu', this.onContextMenu, this);
         }
 

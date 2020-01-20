@@ -574,12 +574,30 @@ Ext.define('Extensible.calendar.view.Month', {
         if (el) {
             if (el.id && el.id.indexOf(this.dayElIdDelimiter) > -1) {
                 var parts = el.id.split(this.dayElIdDelimiter);
-                dt = parts[parts.length-1],
+                dt = parts[parts.length-1];
                 parsedDate = Ext.Date.parseDate(dt + ' 12:00', 'Ymd G:i');
 
                 //this.fireEvent('dayclick', this, parsedDate, false, Ext.get(this.getDayId(dt)));
                 this.onDayClick(parsedDate, false, Ext.get(this.getDayId(dt)));
                 return;
+            }
+        }
+    },
+
+    onContextMenu: function(e, t) {
+        if (Extensible.calendar.view.Month.superclass.onContextMenu.apply(this, arguments)) {
+            // The superclass handled the click already so exit
+            return;
+        }
+
+        var el = e.getTarget('td', 3);
+        if (el) {
+            if (el.id && el.id.indexOf(this.dayElIdDelimiter) > -1) {
+                var parts = el.id.split(this.dayElIdDelimiter),
+                    dt = parts[parts.length-1],
+                    parsedDate = Ext.Date.parseDate(dt + ' 12:00', 'Ymd G:i');
+
+                this.onDayContextMenu(parsedDate, false, Ext.get(this.getDayId(dt)));
             }
         }
     },
