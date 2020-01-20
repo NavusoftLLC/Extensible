@@ -48,11 +48,6 @@ Ext.define('Extensible.calendar.view.Day', {
      */
     enableEventResize: true,
     /**
-     * @cfg {Boolean} enableTooltips
-     * True to display tooltips from Title & Notes of an event
-     */
-    enableTooltips: false,
-    /**
      * @cfg {Integer} ddIncrement
      * The number of minutes between each step during various drag/drop operations in the view (defaults to 30).
      * This controls the number of times the dragged object will "snap" to the view during a drag operation, and does

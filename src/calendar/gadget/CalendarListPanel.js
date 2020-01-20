@@ -18,7 +18,12 @@ Ext.define('Extensible.calendar.gadget.CalendarListPanel', {
     layout: 'fit',
     menuSelector: 'em',
     width: 100, // this should be overridden by this container's layout
-    
+
+    /**
+     * @cfg {Boolean} enableCalendarMenu
+     */
+    enableColorMenu: true,
+
     /**
      * @cfg {Ext.data.Store} store
      * A {@link Ext.data.Store store} containing records of type {@link Extensible.calendar.data.CalendarModel CalendarRecord}.
@@ -49,14 +54,18 @@ Ext.define('Extensible.calendar.gadget.CalendarListPanel', {
             this.tpl = !(Ext.isIE || Ext.isOpera) ?
                 Ext.create('Ext.XTemplate',
                     '<ul class="x-unselectable"><tpl for=".">',
-                        '<li id="{cmpId}" class="ext-cal-evr {colorCls} {hiddenCls}">{title}<em>&#160;</em></li>',
+                        '<li id="{cmpId}" class="ext-cal-evr {colorCls} {hiddenCls}">{title}',
+                            (this.enableColorMenu) ? '<em>&#160;</em>' : '',
+                        '</li>',
                     '</tpl></ul>'
                 )
                 : Ext.create('Ext.XTemplate',
                     '<ul class="x-unselectable"><tpl for=".">',
                         '<li id="{cmpId}" class="ext-cal-evo {colorCls} {hiddenCls}">',
                             '<div class="ext-cal-evm">',
-                                '<div class="ext-cal-evi">{title}<em>&#160;</em></div>',
+                                '<div class="ext-cal-evi">{title}',
+                                    (this.enableColorMenu) ? '<em>&#160;</em>' : '',
+                                '</div>',
                             '</div>',
                         '</li>',
                     '</tpl></ul>'
@@ -200,7 +209,7 @@ Ext.define('Extensible.calendar.gadget.CalendarListPanel', {
     onClick: function(e, t) {
         var el = e.getTarget(this.menuSelector, 3, true);
         
-        if (el) {
+        if (this.enableColorMenu && el) {
             this.showEventMenu(el, e.getXY());
         }
         else {
@@ -234,5 +243,11 @@ Ext.define('Extensible.calendar.gadget.CalendarListPanel', {
         }
         this.menu.setCalendar(id, colorId);
         this.menu.showAt(xy);
+    },
+
+    // private
+    onDestroy: function() {
+        this.setStore(null);
+        this.callParent(arguments);
     }
 });

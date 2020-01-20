@@ -256,6 +256,12 @@ Ext.define('Extensible.calendar.view.AbstractCalendar', {
     notifyOnExceptionDefaultMessage: 'An unknown error occurred',
 
     /**
+     * @cfg {Boolean} enableTooltips
+     * True to display tooltips from Title & Notes of an event
+     */
+    enableTooltips: false,
+
+    /**
      * @property ownerCalendarPanel
      * @type Extensible.calendar.CalendarPanel
      * If this view is hosted inside a {@link Extensible.calendar.CalendarPanel CalendarPanel} this property will reference
@@ -580,6 +586,24 @@ Ext.define('Extensible.calendar.view.AbstractCalendar', {
         // currently the context menu only contains CRUD actions so do not show it if read-only
         if (this.enableContextMenus && this.readOnly !== true) {
             this.el.on('contextmenu', this.onContextMenu, this);
+        }
+
+        if (this.enableTooltips && !this.tooltip) {
+            this.tooltip = Ext.create('Ext.tip.ToolTip', {
+                // The overall target element.
+                target: this.el,
+                // Each event causes its show and hide.
+                delegate: this.eventSelector,
+                // Render immediately so that tip.body can be referenced prior to the first show.
+                renderTo: Ext.getBody(),
+                listeners: {
+                    // Change content dynamically depending on which element triggered the show.
+                    beforeshow: {
+                        fn: this.onShowEventTooltip,
+                        scope: this
+                    }
+                }
+            });
         }
 
         this.el.unselectable();
@@ -2114,6 +2138,15 @@ Ext.define('Extensible.calendar.view.AbstractCalendar', {
         }
     },
 
+    onShowEventTooltip: function (tip) {
+        var M = Extensible.calendar.data.EventMappings,
+            evtData = this.getEventRecordFromEl(tip.triggerElement),
+            title = evtData.get(M.Title.name),
+            notes = evtData.get(M.Notes.name);
+
+        tip.update('<b>' + title + '</b><br/>' + notes);
+    },
+
     // MUST be implemented by subclasses
     renderItems: function() {
         throw new Error('The renderItems method must be implemented by a subclass');
@@ -2145,11 +2178,13 @@ Ext.define('Extensible.calendar.view.AbstractCalendar', {
         if (this.el) {
             this.el.un('contextmenu', this.onContextMenu, this);
         }
+
         Ext.destroy(
             this.editWin,
             this.eventMenu,
             this.dragZone,
-            this.dropZone
+            this.dropZone,
+            this.tooltip
         );
     }
 });
