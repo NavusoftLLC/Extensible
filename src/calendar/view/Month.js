@@ -597,7 +597,7 @@ Ext.define('Extensible.calendar.view.Month', {
                     dt = parts[parts.length-1],
                     parsedDate = Ext.Date.parseDate(dt + ' 12:00', 'Ymd G:i');
 
-                this.onDayContextMenu(parsedDate, false, Ext.get(this.getDayId(dt)));
+                this.onDayContextMenu(parsedDate, false, Ext.get(this.getDayId(dt)), e.getXY());
             }
         }
     },

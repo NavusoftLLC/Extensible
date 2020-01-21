@@ -99,7 +99,7 @@ Ext.define('Extensible.calendar.view.DayHeader', {
                     dt = parts[parts.length-1],
                     parsedDate = Ext.Date.parseDate(dt + ' 12:00', 'Ymd G:i');
 
-                this.onDayContextMenu(parsedDate, true, Ext.get(this.getDayId(dt, true)));
+                this.onDayContextMenu(parsedDate, true, Ext.get(this.getDayId(dt, true)), e.getXY());
                 return;
             }
         }

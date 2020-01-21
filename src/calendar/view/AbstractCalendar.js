@@ -1864,8 +1864,8 @@ Ext.define('Extensible.calendar.view.AbstractCalendar', {
     },
 
     // called from subclasses
-    onDayContextMenu: function(dt, ad, el) {
-        this.fireEvent('daycontextmenu', this, Ext.Date.clone(dt), ad, el);
+    onDayContextMenu: function(dt, ad, el, xy) {
+        this.fireEvent('daycontextmenu', this, Ext.Date.clone(dt), ad, el, xy);
     },
 
     showEventMenu: function(el, xy) {
@@ -2055,7 +2055,7 @@ Ext.define('Extensible.calendar.view.AbstractCalendar', {
             var id = me.getEventIdFromEl(el),
                 rec = me.getEventRecord(id);
 
-            if (rec && me.fireEvent('eventcontextmenu', me, rec, el) !== false) {
+            if (rec && me.fireEvent('eventcontextmenu', me, rec, el, e.getXY()) !== false) {
                 if (this.enableContextMenus && this.readOnly !== true) {
                     this.dismissEventEditor().showEventMenu(el, e.getXY());
                 }

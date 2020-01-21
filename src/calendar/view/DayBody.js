@@ -585,13 +585,13 @@ Ext.define('Extensible.calendar.view.DayBody', {
                 var dt = this.getDateFromId(el.id, this.dayElIdDelimiter),
                     parsedDate = Ext.Date.parseDate(dt + ' 12:00', 'Ymd G:i');
 
-                this.onDayContextMenu(parsedDate, true, Ext.get(this.getDayId(dt)));
+                this.onDayContextMenu(parsedDate, true, Ext.get(this.getDayId(dt)), e.getXY());
                 return;
             }
         }
         var day = this.getDayAt(e.getX(), e.getY());
         if(day && day.date) {
-            this.onDayContextMenu(day.date, false, null);
+            this.onDayContextMenu(day.date, false, null, e.getXY());
         }
     },
 
